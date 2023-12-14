@@ -32,8 +32,6 @@ let productos = ["pantalones", "abrigos", "ccamisetas"];
 //     document.getElementById("currentPage").textContent = currentPage;
 // }
 
-let abrigos = document.getElementById("#contenedor-productos");
-
 
 
 
@@ -85,40 +83,6 @@ async function pantalones() {
     }));
 }
 pantalones();
-
-async function abrigos() {
-    let reqData = await fetch(`http://localhost:5149/api/Producto/tipoabrigos`);
-    let respJson = await reqData.json();
-    abrigo.forEach(boton => boton.addEventListener("click", () => {
-        try {
-            const contenedorProductos = document.querySelector("#contenedor-productos");
-            contenedorProductos.innerHTML = "";
-            abrigo.forEach(boton => boton.addEventListener("click", () => {
-                aside.classList.remove("aside-visible");
-            }))
-            respJson.forEach(producto => {
-
-                const div = document.createElement("div");
-                div.classList.add("producto");
-                div.innerHTML = /*html*/`
-            <img class="producto-imagen" src="${producto.imagen}" alt="${producto.nombre}">
-            <div class="producto-detalles">
-                <h3 class="producto-titulo">${producto.nombre}</h3>
-                <p class="producto-precio">$${producto.precio}</p>
-                <button class="producto-agregar" id="${producto.id}">Agregar</button>
-            </div>
-        `;
-
-                contenedorProductos.append(div);
-            });
-        } catch (error) {
-            console.error('Error al obtener datos:', error);
-        }
-
-        actualizarBotonesAgregar();
-    }));
-}
-abrigos();
 
 
 async function camisetas() {
@@ -207,6 +171,40 @@ botonesCategorias.forEach(boton => {
 
     })
 });
+
+async function abrigos() {
+    let reqData = await fetch(`http://localhost:5149/api/Producto/tipoabrigos`);
+    let respJson = await reqData.json();
+    abrigo.forEach(boton => boton.addEventListener("click", () => {
+        try {
+            const contenedorProductos = document.querySelector("#contenedor-productos");
+            contenedorProductos.innerHTML = "";
+            abrigo.forEach(boton => boton.addEventListener("click", () => {
+                aside.classList.remove("aside-visible");
+            }))
+            respJson.forEach(producto => {
+
+                const div = document.createElement("div");
+                div.classList.add("producto");
+                div.innerHTML = /*html*/`
+            <img class="producto-imagen" src="${producto.imagen}" alt="${producto.nombre}">
+            <div class="producto-detalles">
+                <h3 class="producto-titulo">${producto.nombre}</h3>
+                <p class="producto-precio">$${producto.precio}</p>
+                <button class="producto-agregar" id="${producto.id}">Agregar</button>
+            </div>
+        `;
+
+                contenedorProductos.append(div);
+            });
+        } catch (error) {
+            console.error('Error al obtener datos:', error);
+        }
+
+        actualizarBotonesAgregar();
+    }));
+}
+abrigos();
 
 function actualizarBotonesAgregar() {
     botonesAgregar = document.querySelectorAll(".producto-agregar");
