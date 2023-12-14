@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, height=device-height initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="shortcut icon" href="img/Campus.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/bootstrapCSS/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="../js/bootstrapJS/bootstrap.bundle.min.js" defer></script>
+    <script src="../js/menu.js"></script>
+    <title>Menu</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header-mobile">
+            <h1 class="logo">CampusShop</h1>
+            <button class="open-menu" id="open-menu">
+                <span class="material-symbols-outlined">
+                    list
+                </span>
+            </button>
+        </header>
+        <aside>
+            <button class="close-menu" id="close-menu">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+            <header>
+                <h1 class="logo">CampusShop</h1>
+            </header>
+            <nav>
+                <ul class="menu">
+                    <li>
+                        <button id="todos" class="boton-menu boton-categoria active"><span
+                                class="material-symbols-outlined">
+                                storefront
+                            </span> Todos los productos</button>
+                    </li>
+                    <li>
+                        <button id="abrigos" class="boton-menu boton-categoria"><span class="material-symbols-outlined">
+                                laundry
+                            </span>
+                            Abrigos</button>
+                    </li>
+                    <li>
+                        <button id="camisetas" class="boton-menu boton-categoria"><span
+                                class="material-symbols-outlined">
+                                apparel
+                            </span>
+                            Camisetas</button>
+                    </li>
+                    <li>
+                        <button id="pantalones" class="boton-menu boton-categoria"><span
+                                class="material-symbols-outlined">
+                                styler
+                            </span> Pantalones</button>
+                    </li>
+                    <li>
+                        <a style="text-decoration: none;" class="boton-menu boton-carrito" href="./carrito.html">
+                            <span class="material-symbols-outlined">
+                                shopping_cart_checkout
+                            </span> Carrito <span id="numerito" class="numerito">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <footer>
+                <a id="logout" style="text-decoration: none;" class="boton-menu boton-volver" href="../index.html">
+                    <span class="material-symbols-outlined">
+                        keyboard_return
+                    </span> Salir
+                </a>
+                <p class="texto-footer">© 2022 CampusLands</p>
+            </footer>
+        </aside>
+        <main>
+            <h2 class="titulo-principal" id="titulo-principal">Todos los productos</h2>
+            <div id="contenedor-productos" class="contenedor-productos">
+                <!-- Esto se va a rellenar con JS -->
+            </div>
+        </main>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/menu.js"></script>
+    <script src="../js/logout.js"></script>
+</body>
+
+</html>
