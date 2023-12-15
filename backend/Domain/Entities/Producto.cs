@@ -23,7 +23,11 @@ public partial class Producto : BaseEntity
 
     public int? IdTipoProductoFk { get; set; }
 
+    public int? IdEstadoFk { get; set; }
+
     public virtual TipoProducto IdTipoProductoFkNavigation { get; set; }
+
+    public virtual Estado IdEstadoFkNavigation { get; set; }
 
     public virtual ICollection<Orden> Ordens { get; set; } = new List<Orden>();
 }

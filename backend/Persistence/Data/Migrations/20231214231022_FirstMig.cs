@@ -16,6 +16,21 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "estado",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    descripcion = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "forma_pago",
                 columns: table => new
                 {
@@ -156,11 +171,18 @@ namespace Persistence.Data.Migrations
                     stock_actual = table.Column<int>(type: "int", nullable: true),
                     stock_max = table.Column<int>(type: "int", nullable: true),
                     precio = table.Column<double>(type: "double", nullable: true),
-                    id_tipo_producto_fk = table.Column<int>(type: "int", nullable: true)
+                    id_tipo_producto_fk = table.Column<int>(type: "int", nullable: true),
+                    IdEstadoFk = table.Column<int>(type: "int", nullable: true),
+                    IdEstadoFkNavigationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PRIMARY", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_producto_estado_IdEstadoFkNavigationId",
+                        column: x => x.IdEstadoFkNavigationId,
+                        principalTable: "estado",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "producto_ibfk_1",
                         column: x => x.id_tipo_producto_fk,
@@ -410,13 +432,25 @@ namespace Persistence.Data.Migrations
                 column: "id_ciudad_fk");
 
             migrationBuilder.CreateIndex(
+                name: "descripcion",
+                table: "estado",
+                column: "descripcion",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "id4",
-                table: "forma_pago",
+                table: "estado",
                 column: "id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "id5",
+                table: "forma_pago",
+                column: "id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "id6",
                 table: "orden",
                 column: "id",
                 unique: true);
@@ -427,7 +461,7 @@ namespace Persistence.Data.Migrations
                 column: "id_producto_fk");
 
             migrationBuilder.CreateIndex(
-                name: "id6",
+                name: "id7",
                 table: "orden_pedido",
                 column: "id",
                 unique: true);
@@ -443,7 +477,7 @@ namespace Persistence.Data.Migrations
                 column: "id_pedido_fk");
 
             migrationBuilder.CreateIndex(
-                name: "id7",
+                name: "id8",
                 table: "pago",
                 column: "id",
                 unique: true);
@@ -454,7 +488,7 @@ namespace Persistence.Data.Migrations
                 column: "id_forma_pago_fk");
 
             migrationBuilder.CreateIndex(
-                name: "id8",
+                name: "id9",
                 table: "pais",
                 column: "id",
                 unique: true);
@@ -466,7 +500,7 @@ namespace Persistence.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "id9",
+                name: "id10",
                 table: "pedido",
                 column: "id",
                 unique: true);
@@ -482,7 +516,12 @@ namespace Persistence.Data.Migrations
                 column: "id_pago_fk");
 
             migrationBuilder.CreateIndex(
-                name: "id10",
+                name: "IX_producto_IdEstadoFkNavigationId",
+                table: "producto",
+                column: "IdEstadoFkNavigationId");
+
+            migrationBuilder.CreateIndex(
+                name: "id11",
                 table: "producto",
                 column: "id",
                 unique: true);
@@ -493,7 +532,7 @@ namespace Persistence.Data.Migrations
                 column: "id_tipo_producto_fk");
 
             migrationBuilder.CreateIndex(
-                name: "id11",
+                name: "id12",
                 table: "tipo_producto",
                 column: "id",
                 unique: true);
@@ -533,6 +572,9 @@ namespace Persistence.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "pago");
+
+            migrationBuilder.DropTable(
+                name: "estado");
 
             migrationBuilder.DropTable(
                 name: "tipo_producto");

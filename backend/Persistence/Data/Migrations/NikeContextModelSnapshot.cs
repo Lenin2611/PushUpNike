@@ -201,6 +201,31 @@ namespace Persistence.Data.Migrations
                     b.ToTable("direccion", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Estado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("descripcion");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "Descripcion" }, "descripcion")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "Id" }, "id")
+                        .IsUnique()
+                        .HasDatabaseName("id4");
+
+                    b.ToTable("estado", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.FormaPago", b =>
                 {
                     b.Property<int>("Id")
@@ -218,7 +243,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id4");
+                        .HasDatabaseName("id5");
 
                     b.ToTable("forma_pago", (string)null);
                 });
@@ -243,7 +268,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id5");
+                        .HasDatabaseName("id6");
 
                     b.HasIndex(new[] { "IdProductoFk" }, "id_producto_fk");
 
@@ -270,7 +295,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id6");
+                        .HasDatabaseName("id7");
 
                     b.HasIndex(new[] { "IdOrdenFk" }, "id_orden_fk");
 
@@ -303,7 +328,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id7");
+                        .HasDatabaseName("id8");
 
                     b.HasIndex(new[] { "IdFormaPagoFk" }, "id_forma_pago_fk");
 
@@ -327,7 +352,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id8");
+                        .HasDatabaseName("id9");
 
                     b.HasIndex(new[] { "Nombre" }, "nombre")
                         .IsUnique()
@@ -356,7 +381,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id9");
+                        .HasDatabaseName("id10");
 
                     b.HasIndex(new[] { "IdClienteFk" }, "id_cliente_fk");
 
@@ -371,6 +396,12 @@ namespace Persistence.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    b.Property<int?>("IdEstadoFk")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdEstadoFkNavigationId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdTipoProductoFk")
                         .HasColumnType("int")
@@ -410,9 +441,11 @@ namespace Persistence.Data.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
+                    b.HasIndex("IdEstadoFkNavigationId");
+
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id10");
+                        .HasDatabaseName("id11");
 
                     b.HasIndex(new[] { "IdTipoProductoFk" }, "id_tipo_producto_fk");
 
@@ -452,7 +485,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex(new[] { "Id" }, "id")
                         .IsUnique()
-                        .HasDatabaseName("id11");
+                        .HasDatabaseName("id12");
 
                     b.ToTable("tipo_producto", (string)null);
                 });
@@ -605,10 +638,16 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Producto", b =>
                 {
+                    b.HasOne("Domain.Entities.Estado", "IdEstadoFkNavigation")
+                        .WithMany("Productos")
+                        .HasForeignKey("IdEstadoFkNavigationId");
+
                     b.HasOne("Domain.Entities.TipoProducto", "IdTipoProductoFkNavigation")
                         .WithMany("Productos")
                         .HasForeignKey("IdTipoProductoFk")
                         .HasConstraintName("producto_ibfk_1");
+
+                    b.Navigation("IdEstadoFkNavigation");
 
                     b.Navigation("IdTipoProductoFkNavigation");
                 });
@@ -650,6 +689,11 @@ namespace Persistence.Data.Migrations
             modelBuilder.Entity("Domain.Entities.Direccion", b =>
                 {
                     b.Navigation("Clientes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Estado", b =>
+                {
+                    b.Navigation("Productos");
                 });
 
             modelBuilder.Entity("Domain.Entities.FormaPago", b =>

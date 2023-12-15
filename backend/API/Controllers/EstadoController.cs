@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
-using API.Helpers;
 using Application.UnitOfWork;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    public class ProductoController : BaseController
+    public class EstadoController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductoController(IUnitOfWork unitOfWork, IMapper mapper)
+        public EstadoController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,33 +25,33 @@ namespace API.Controllers
         [HttpGet] // 2611
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<ProductoDto>>> Get()
+        public async Task<ActionResult<IEnumerable<EstadoDto>>> Get()
         {
-            var results = await _unitOfWork.Productos.GetAllAsync();
-            return _mapper.Map<List<ProductoDto>>(results);
+            var results = await _unitOfWork.Estados.GetAllAsync();
+            return _mapper.Map<List<EstadoDto>>(results);
         }
 
         [HttpGet("{id}")] // 2611
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductoDto>> Get(int id)
+        public async Task<ActionResult<EstadoDto>> Get(int id)
         {
-            var result = await _unitOfWork.Productos.GetByIdAsync(id);
+            var result = await _unitOfWork.Estados.GetByIdAsync(id);
             if (result == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<ProductoDto>(result);
+            return _mapper.Map<EstadoDto>(result);
         }
 
         [HttpPost] // 2611
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ProductoDto>> Post(ProductoDto resultDto)
+        public async Task<ActionResult<EstadoDto>> Post(EstadoDto resultDto)
         {
-            var result = _mapper.Map<Producto>(resultDto);
-            _unitOfWork.Productos.Add(result);
+            var result = _mapper.Map<Estado>(resultDto);
+            _unitOfWork.Estados.Add(result);
             await _unitOfWork.SaveAsync();
             if (result == null)
             {
@@ -67,9 +65,9 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductoDto>> Put(int id, [FromBody] ProductoDto resultDto)
+        public async Task<ActionResult<EstadoDto>> Put(int id, [FromBody] EstadoDto resultDto)
         {
-            var exists = await _unitOfWork.Productos.GetByIdAsync(id);
+            var exists = await _unitOfWork.Estados.GetByIdAsync(id);
             if (exists == null)
             {
                 return NotFound();
@@ -91,7 +89,7 @@ namespace API.Controllers
             // The context is already tracking result, so no need to attach it
             await _unitOfWork.SaveAsync();
             // Return the updated entity
-            return _mapper.Map<ProductoDto>(exists);
+            return _mapper.Map<EstadoDto>(exists);
         }
 
         [HttpDelete("{id}")] // 2611
@@ -99,41 +97,14 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _unitOfWork.Productos.GetByIdAsync(id);
+            var result = await _unitOfWork.Estados.GetByIdAsync(id);
             if (result == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Productos.Remove(result);
+            _unitOfWork.Estados.Remove(result);
             await _unitOfWork.SaveAsync();
             return NoContent();
-        }
-
-        [HttpGet("tipo{tipo}")] // 2611
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<ProductoDto>>> GetProductoByTipo(string tipo, [FromQuery]PaginacionDto paginacionDto)
-        {
-            var queryable = _unitOfWork.Productos.GetProductoByTipo(tipo);
-            if (queryable == null)
-            {
-                return NotFound();
-            }
-            await HttpContext.InsertPaginationHeader(queryable);
-            var results = await queryable.OrderBy(x => x.Id).Paginate(paginacionDto).ToListAsync();
-            return _mapper.Map<List<ProductoDto>>(results);
-        }
-
-        [HttpGet("estado")] // 2611
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<ProductoDto>>> GetProductoByEstado([FromQuery]PaginacionDto paginacionDto)
-        {
-            var queryable = _unitOfWork.Productos.GetProductoByEstado();
-            await HttpContext.InsertPaginationHeader(queryable);
-            var results = await queryable.OrderBy(x => x.Id).Paginate(paginacionDto).ToListAsync();
-            return _mapper.Map<List<ProductoDto>>(results);
         }
     }
 }

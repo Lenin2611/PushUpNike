@@ -9,5 +9,6 @@ namespace Domain.Interfaces
     public interface IProducto : IGenericRepository<Producto>
     {
         IQueryable<Producto> GetProductoByTipo(string tipoprod);
+        IQueryable<Producto> GetProductoByEstado();
     }
 }

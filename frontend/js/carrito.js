@@ -1,5 +1,4 @@
-let productosEnCarrito = localStorage.getItem("productos-en-carrito");
-productosEnCarrito = JSON.parse(productosEnCarrito);
+
 
 const contenedorCarritoVacio = document.querySelector("#carrito-vacio");
 const contenedorCarritoProductos = document.querySelector("#carrito-productos");
@@ -11,8 +10,10 @@ const contenedorTotal = document.querySelector("#total");
 const botonComprar = document.querySelector("#carrito-acciones-comprar");
 
 
-function cargarProductosCarrito() {
-    if (productosEnCarrito && productosEnCarrito.length > 0) {
+async function cargarProductosCarrito() {
+    let productosCarrito = await fetch(`http://localhost:5149/api/Producto/estado`);
+    let productosCarro = await productosCarrito.json();
+    if (productosCarro && productosCarro.length > 0) {
 
         contenedorCarritoVacio.classList.add("disabled");
         contenedorCarritoProductos.classList.remove("disabled");
@@ -21,11 +22,11 @@ function cargarProductosCarrito() {
 
         contenedorCarritoProductos.innerHTML = "";
 
-        productosEnCarrito.forEach(producto => {
+        productosCarro.forEach(producto => {
 
             const div = document.createElement("div");
             div.classList.add("carrito-producto");
-            div.innerHTML = `
+            div.innerHTML = /*html*/`
                 <img class="carrito-producto-imagen" src="${producto.imagen}" alt="${producto.titulo}">
                 <div class="carrito-producto-titulo">
                     <small>Título</small>
@@ -71,7 +72,9 @@ function actualizarBotonesEliminar() {
     });
 }
 
-function eliminarDelCarrito(e) {
+async function eliminarDelCarrito(e) {
+    let productosCarrito = await fetch(`http://localhost:5149/api/Producto/estado`);
+    let productosCarro = await productosCarrito.json();
     Toastify({
         text: "Producto eliminado",
         duration: 3000,
@@ -93,46 +96,49 @@ function eliminarDelCarrito(e) {
     }).showToast();
 
     const idBoton = e.currentTarget.id;
-    const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
+    const index = productosCarro.findIndex(producto => producto.id === idBoton);
 
-    productosEnCarrito.splice(index, 1);
+    productosCarro.splice(index, 1);
     cargarProductosCarrito();
 
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosCarro));
 
 }
 
 botonVaciar.addEventListener("click", vaciarCarrito);
-function vaciarCarrito() {
-
+async function vaciarCarrito() {
+    let productosCarrito = await fetch(`http://localhost:5149/api/Producto/estado`);
+    let productosCarro = await productosCarrito.json();
     Swal.fire({
         title: '¿Estás seguro?',
         icon: 'question',
-        html: `Se van a borrar ${productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0)} productos.`,
+        html: `Se van a borrar ${productosCarro.reduce((acc, producto) => acc + producto.cantidad, 0)} productos.`,
         showCancelButton: true,
         focusConfirm: false,
         confirmButtonText: 'Sí',
         cancelButtonText: 'No'
     }).then((result) => {
         if (result.isConfirmed) {
-            productosEnCarrito.length = 0;
-            localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+            productosCarro.length = 0;
+            localStorage.setItem("productos-en-carrito", JSON.stringify(productosCarro));
             cargarProductosCarrito();
         }
     })
 }
 
-
-function actualizarTotal() {
-    const totalCalculado = productosEnCarrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0);
+async function actualizarTotal() {
+    let productosCarrito = await fetch(`http://localhost:5149/api/Producto/estado`);
+    let productosCarro = await productosCarrito.json();
+    const totalCalculado = productosCarro.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0);
     total.innerText = `$${totalCalculado}`;
 }
 
 botonComprar.addEventListener("click", comprarCarrito);
-function comprarCarrito() {
-
-    productosEnCarrito.length = 0;
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+async function comprarCarrito() {
+    let productosCarrito = await fetch(`http://localhost:5149/api/Producto/estado`);
+    let productosCarro = await productosCarrito.json();
+    productosCarro.length = 0;
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosCarro));
 
     contenedorCarritoVacio.classList.add("disabled");
     contenedorCarritoProductos.classList.add("disabled");

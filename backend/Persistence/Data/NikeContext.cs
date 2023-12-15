@@ -25,6 +25,8 @@ public partial class NikeContext : DbContext
 
     public virtual DbSet<Direccion> Direcciones { get; set; }
 
+    public virtual DbSet<Estado> Estados { get; set; }
+
     public virtual DbSet<FormaPago> FormaPagos { get; set; }
 
     public virtual DbSet<Orden> Ordenes { get; set; }

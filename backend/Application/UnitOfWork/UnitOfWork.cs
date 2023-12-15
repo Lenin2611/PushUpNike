@@ -16,6 +16,7 @@ namespace Application.UnitOfWork
         private ICliente _Clientes;
         private IDepartamento _Departamentos;
         private IDireccion _Direcciones;
+        private IEstado _Estados;
         private IFormaPago _FormaPagos;
         private IOrden _Ordenes;
         private IOrdenPedido _OrdenPedidos;
@@ -74,6 +75,17 @@ namespace Application.UnitOfWork
                     _Direcciones = new DireccionRepository(_context);
                 }
                 return _Direcciones;
+            }
+        }
+        public IEstado Estados // 2611
+        {
+            get
+            {
+                if (_Estados == null)
+                {
+                    _Estados = new EstadoRepository(_context);
+                }
+                return _Estados;
             }
         }
         public IFormaPago FormaPagos // 2611

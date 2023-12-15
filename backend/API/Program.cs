@@ -17,12 +17,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.ConfigureCors();
+
 builder.Services.ConfigureRateLimiting();
+
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+
 builder.Services.AddApplicationServices();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -34,6 +41,7 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -45,6 +53,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
                 builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
 });
+
 builder.Services.AddDbContext<NikeContext>(optionsBuilder =>
 {
     string connectionString = builder.Configuration.GetConnectionString("MySqlConex");

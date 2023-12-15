@@ -11,6 +11,7 @@ namespace Domain.Interfaces
         public ICliente Clientes { get; }
         public IDepartamento Departamentos { get; }
         public IDireccion Direcciones { get; }
+        public IEstado Estados { get; }
         public IFormaPago FormaPagos { get; }
         public IOrden Ordenes { get; }
         public IOrdenPedido OrdenPedidos { get; }

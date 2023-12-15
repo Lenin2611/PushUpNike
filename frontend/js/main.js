@@ -1,7 +1,7 @@
 let productos = ["pantalones", "abrigos", "ccamisetas"];
 
 // let currentPage = 1;
-// let x =1;
+let x = 1;
 // const pageSize = 4; // Tamaño de la página
 
 // function previousPage() {
@@ -46,9 +46,8 @@ let botonesAgregar = document.querySelectorAll(".producto-agregar");
 const numerito = document.querySelector("#numerito");
 
 
-botonesCategorias.forEach(boton => boton.addEventListener("click", () => {
-    aside.classList.remove("aside-visible");
-}))
+
+
 
 async function pantalones() {
     let reqData = await fetch(`http://localhost:5149/api/Producto/tipopantalones`);
@@ -57,9 +56,6 @@ async function pantalones() {
         try {
             const contenedorProductos = document.querySelector("#contenedor-productos");
             contenedorProductos.innerHTML = "";
-            pantalone.forEach(boton => boton.addEventListener("click", () => {
-                aside.classList.remove("aside-visible");
-            }))
             respJson.forEach(producto => {
 
                 const div = document.createElement("div");
@@ -92,9 +88,6 @@ async function camisetas() {
         try {
             const contenedorProductos = document.querySelector("#contenedor-productos");
             contenedorProductos.innerHTML = "";
-            camiseta.forEach(boton => boton.addEventListener("click", () => {
-                aside.classList.remove("aside-visible");
-            }))
             respJson.forEach(producto => {
 
                 const div = document.createElement("div");
@@ -125,9 +118,6 @@ async function cargarProductos() {
         let respJson = await reqData.json();
         const contenedorProductos = document.querySelector("#contenedor-productos");
         contenedorProductos.innerHTML = "";
-        botonesCategorias.forEach(boton => boton.addEventListener("click", () => {
-            aside.classList.remove("aside-visible");
-        }))
         respJson.forEach(producto => {
 
         const div = document.createElement("div");
@@ -179,9 +169,7 @@ async function abrigos() {
         try {
             const contenedorProductos = document.querySelector("#contenedor-productos");
             contenedorProductos.innerHTML = "";
-            abrigo.forEach(boton => boton.addEventListener("click", () => {
-                aside.classList.remove("aside-visible");
-            }))
+
             respJson.forEach(producto => {
 
                 const div = document.createElement("div");
@@ -235,10 +223,11 @@ function agregarAlCarrito(e) {
         position: "right", // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: {
-            background: "linear-gradient(to right, #4b33a8, #785ce9)",
+            background: "linear-gradient(to right, #000, #aaa)",
             borderRadius: "2rem",
             textTransform: "uppercase",
-            fontSize: ".75rem"
+            fontSize: ".75rem",
+            color: "#fff"
         },
         offset: {
             x: '1.5rem', // horizontal axis - can be a number or a string indicating unity. eg: '2em'
@@ -252,7 +241,7 @@ function agregarAlCarrito(e) {
 
     if (productosEnCarrito.some(producto => producto.id === idBoton)) {
         const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
-        productosEnCarrito[index].cantidad++;
+        productosEnCarrito[index].cantidad;
     } else {
         productoAgregado.cantidad = 1;
         productosEnCarrito.push(productoAgregado);

@@ -25,5 +25,13 @@ namespace Application.Repositories
                     where tipo.Descripcion == tipoprod
                     select producto).AsQueryable();
         }
+
+        public IQueryable<Producto> GetProductoByEstado()
+        {
+            return (from producto in _context.Productos
+                    join estado in _context.Estados on producto.IdEstadoFk equals estado.Id
+                    where estado.Descripcion == "Carrito"
+                    select producto).AsQueryable();
+        }
     }
 }
